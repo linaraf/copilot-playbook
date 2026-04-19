@@ -59,3 +59,30 @@ export interface ComparisonMenuItem {
   uk_ingredients: string[]
   gap_score?: number
 }
+
+export interface TrendingComparison {
+  id: string
+  itemName: string
+  itemSlug: string
+  chainName: string
+  chainSlug: string
+  gapScore: number
+  viewCount: number
+  usOnlyCount?: number
+  ukOnlyCount?: number
+}
+
+export interface WorstOffenderChain {
+  id: string
+  name: string
+  slug: string
+  avgGapScore: number
+  flaggedIngredientCount: number
+  itemCount: number
+}
+
+export interface SiteStats {
+  itemCount: number
+  chainCount: number
+  countryCount: number
+}
