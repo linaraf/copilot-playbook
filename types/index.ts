@@ -51,3 +51,11 @@ export interface NewsletterSignup {
   email: string
   subscribedAt: string
 }
+
+export interface ComparisonMenuItem {
+  name: string
+  slug?: string
+  us_ingredients: string[]
+  uk_ingredients: string[]
+  gap_score?: number
+}
