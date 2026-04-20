@@ -4,11 +4,15 @@ import { Footer } from '@/components/footer'
 import './globals.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+  ),
   title: {
     default: 'MenuTruth — Know What You Eat',
     template: '%s | MenuTruth',
   },
   description: "Transparent ingredient analysis for fast food chains. Find out exactly what's in your meal.",
+  twitter: { card: 'summary_large_image' },
 }
 
 export default function RootLayout({

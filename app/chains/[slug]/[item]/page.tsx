@@ -9,7 +9,24 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, item } = await params
-  return { title: `${item.replace(/-/g, ' ')} — ${slug}` }
+  const itemName  = item.replace(/-/g, ' ')
+  const chainName = SAMPLE_ITEM.name === itemName ? SAMPLE_ITEM.name : itemName
+
+  const usCount     = SAMPLE_ITEM.us_ingredients.length
+  const ukCount     = SAMPLE_ITEM.uk_ingredients.length
+  const bannedCount = SAMPLE_ITEM.us_ingredients.filter((i) =>
+    SAMPLE_FLAGGED.some((f) => f.toLowerCase() === i.toLowerCase())
+  ).length
+
+  const ogUrl = `/api/og/preview?name=${encodeURIComponent(itemName)}&chain=${encodeURIComponent(slug)}&us=${usCount}&uk=${ukCount}&flagged=${bannedCount}&score=8`
+
+  return {
+    title: `${itemName} — ${slug}`,
+    openGraph: {
+      images: [{ url: ogUrl, width: 1200, height: 630, alt: `${itemName} ingredient comparison` }],
+    },
+    twitter: { card: 'summary_large_image' },
+  }
 }
 
 const SAMPLE_FLAGGED = [
