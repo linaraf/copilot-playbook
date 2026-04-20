@@ -33,6 +33,8 @@
   --color-flagged-foreground: oklch(0.98 0.00 0);
   --color-clean: oklch(0.55 0.17 145);
   --color-clean-foreground: oklch(0.98 0.00 0);
+  --color-caution: oklch(0.72 0.17 65);
+  --color-caution-foreground: oklch(0.15 0.00 0);
 
   /* Radius */
   --radius: 0.5rem;

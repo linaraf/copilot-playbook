@@ -13,6 +13,7 @@ const badgeVariants = cva(
         outline: "text-foreground",
         flagged: "border-transparent bg-flagged text-flagged-foreground shadow",
         clean: "border-transparent bg-clean text-clean-foreground shadow",
+        caution: "border-transparent bg-caution text-caution-foreground shadow",
       },
     },
     defaultVariants: {

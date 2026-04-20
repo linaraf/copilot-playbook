@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
-import type { TrendingComparison, WorstOffenderChain, SiteStats } from '@/types'
+import type { TrendingComparison, WorstOffenderChain, SiteStats, IngredientDetail, CountryStatus } from '@/types'
+import { placeholderIngredientDetails } from '@/data/placeholder'
 
 // ─── Fallback data (used when Supabase is not yet configured) ────────────────
 
@@ -136,5 +137,67 @@ export async function getSiteStats(): Promise<SiteStats> {
     }
   } catch {
     return FALLBACK_STATS
+  }
+}
+
+export async function getIngredientBySlug(slug: string): Promise<IngredientDetail | null> {
+  try {
+    const supabase = await createClient()
+
+    const { data, error } = await supabase
+      .from('ingredients')
+      .select(`
+        *,
+        ingredient_country_statuses ( country, status ),
+        item_ingredients (
+          menu_items ( name, slug, gap_score, chains ( name, slug ) )
+        )
+      `)
+      .eq('slug', slug)
+      .single()
+
+    if (error || !data) return placeholderIngredientDetails[slug] ?? null
+
+    type CSRow = { country: string; status: string }
+    type MIRow = { name: string; slug: string; gap_score: number; chains: { name: string; slug: string } }
+    type IIRow = { menu_items: MIRow }
+
+    const csRows = (data.ingredient_country_statuses ?? []) as CSRow[]
+    const countryStatus = {
+      us:        (csRows.find((r) => r.country === 'us')?.status        ?? 'unknown') as CountryStatus,
+      eu:        (csRows.find((r) => r.country === 'eu')?.status        ?? 'unknown') as CountryStatus,
+      uk:        (csRows.find((r) => r.country === 'uk')?.status        ?? 'unknown') as CountryStatus,
+      japan:     (csRows.find((r) => r.country === 'japan')?.status     ?? 'unknown') as CountryStatus,
+      canada:    (csRows.find((r) => r.country === 'canada')?.status    ?? 'unknown') as CountryStatus,
+      australia: (csRows.find((r) => r.country === 'australia')?.status ?? 'unknown') as CountryStatus,
+    }
+
+    const menuAppearances = ((data.item_ingredients ?? []) as IIRow[])
+      .map(({ menu_items: item }) => ({
+        itemName:  item.name,
+        itemSlug:  item.slug,
+        chainName: item.chains.name,
+        chainSlug: item.chains.slug,
+        gapScore:  item.gap_score,
+      }))
+
+    return {
+      id:              String(data.id),
+      name:            data.name as string,
+      slug:            data.slug as string,
+      aliases:         (data.aliases as string[]) ?? [],
+      description:     data.description as string,
+      status:          data.status as IngredientDetail['status'],
+      category:        data.category as string,
+      usedInChains:    (data.used_in_chains as string[]) ?? [],
+      function:        (data.function as string)        ?? '',
+      healthConcerns:  (data.health_concerns as string) ?? '',
+      sources:         (data.sources as string[])       ?? [],
+      countryStatus,
+      menuAppearances,
+      createdAt:       data.created_at as string,
+    }
+  } catch {
+    return placeholderIngredientDetails[slug] ?? null
   }
 }

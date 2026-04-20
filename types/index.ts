@@ -86,3 +86,27 @@ export interface SiteStats {
   chainCount: number
   countryCount: number
 }
+
+export type CountryStatus = 'banned' | 'restricted' | 'approved' | 'unknown'
+
+export interface IngredientMenuAppearance {
+  itemName: string
+  itemSlug: string
+  chainName: string
+  chainSlug: string
+  gapScore?: number
+}
+
+export interface IngredientDetail extends Ingredient {
+  function: string
+  healthConcerns: string
+  countryStatus: {
+    us: CountryStatus
+    eu: CountryStatus
+    uk: CountryStatus
+    japan: CountryStatus
+    canada: CountryStatus
+    australia: CountryStatus
+  }
+  menuAppearances: IngredientMenuAppearance[]
+}
