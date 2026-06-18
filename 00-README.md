@@ -16,6 +16,7 @@ Everything you need to build your company's AI hub. Use these files to populate 
 | `06-starter-use-cases.md` | 10 real use cases with step-by-step guides | Load these into your Use Cases Gallery list |
 | `07-agents-tools-directory.md` | Tool guide for all Copilot tools | Paste into your Agents & Tools Directory page |
 | `08-gamification-monthly-challenge.md` | Points system + 12-month challenge bank | Use for your Community page and Leaderboard |
+| `09-ask-lina-agent.md` | Build guide for an "Ask Lina" Copilot Studio agent | Stand up a self-service Q&A agent (e.g. for sabbatical cover) |
 
 ---
 
@@ -46,7 +47,7 @@ Before publishing any content, search for and replace:
 ## Phase 2 (After Pilot) — What to Add Next
 
 - Power Automate flows (notifications for new certs, prompts, weekly digest)
-- Copilot Studio agent ("AI Guru Bot" in Teams)
+- Copilot Studio agent ("AI Guru Bot" / "Ask Lina" in Teams) → see `09-ask-lina-agent.md`
 - Power BI dashboard for adoption metrics
 - Microsoft Viva Learning integration
 - Company-wide launch communications
